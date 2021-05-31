@@ -25,10 +25,12 @@ module.exports = (sequelize, DataTypes) => {
       backgroundColor: {
         type: DataTypes.STRING,
         allowNull: true,
+        defaultValue: "#ffffff",
       },
       color: {
         type: DataTypes.STRING,
         allowNull: true,
+        defaultValue: "#000000",
       },
     },
     {

@@ -1,6 +1,6 @@
-"use strict";
-const bcrypt = require("bcrypt");
-const { SALT_ROUNDS } = require("../config/constants");
+"use strict"
+const bcrypt = require("bcrypt")
+const { SALT_ROUNDS } = require("../config/constants")
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
@@ -23,10 +23,10 @@ module.exports = {
         },
       ],
       {}
-    );
+    )
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkDelete("users", null, {});
+    await queryInterface.bulkDelete("users", null, {})
   },
-};
+}

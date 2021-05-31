@@ -52,15 +52,16 @@ router.post("/signup", async (req, res) => {
 
     const token = toJWT({ userId: newUser.id })
 
-    const newSpace = await Space.create({
+    const space = await Space.create({
       title: `${name}'s space`,
-      description: null,
-      backgroundColor: "#ffffff",
-      color: "#000000",
       userId: newUser.id,
     })
 
-    res.status(201).json({ token, ...newUser.dataValues, newSpace })
+    res.status(201).json({
+      token,
+      ...newUser.dataValues,
+      space,
+    })
   } catch (error) {
     if (error.name === "SequelizeUniqueConstraintError") {
       return res
