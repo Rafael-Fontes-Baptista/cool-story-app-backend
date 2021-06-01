@@ -1,12 +1,16 @@
 const { Router } = require("express")
 const Space = require("../models/").space
 const Story = require("../models/").story
+const auth = require("../auth/middleware")
 
 const router = new Router()
 
 router.get("/", async (req, res, next) => {
   try {
-    const spaces = await Space.findAll()
+    const spaces = await Space.findAll({
+      include: [Story],
+      order: [[Story, "createdAt", "DESC"]],
+    })
 
     return res.status(200).send(spaces)
   } catch (error) {
@@ -33,6 +37,21 @@ router.get("/:spaceId", async (req, res, next) => {
   } catch (e) {
     next(e)
   }
+})
+
+router.patch("/:spaceId", auth, async (req, res) => {
+  const space = await Space.findByPk(req.params.spaceId)
+  if (!space.userId === req.user.id) {
+    return res
+      .status(403)
+      .send({ message: "You are not authorized to update this space" })
+  }
+
+  const { title, description, backgroundColor, color } = req.body
+
+  await space.update({ title, description, backgroundColor, color })
+
+  return res.status(200).send({ space })
 })
 
 module.exports = router
